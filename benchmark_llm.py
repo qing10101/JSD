@@ -7,7 +7,6 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 # ---------------------------------------------------------
 # CONFIGURATION
 # ---------------------------------------------------------
-DEFAULT_MODELS = ["llama3.1:8b", "qwen3:1.7b"]
 MAX_WORKERS = 4
 
 # ---------------------------------------------------------
@@ -86,22 +85,19 @@ def process_single_inference(model, profile_id, attr, raw_text, has_synthetic):
         }
 
 
-def infer_from_profile(profile_data, target_attributes, models=None, has_synthetic=False):
+def infer_from_profile(profile_data, target_attributes, model_name, has_synthetic=False):
     """
     Pipeline Entry Point.
 
     Args:
         profile_data (dict): A single profile object. Must contain 'comments' list and an 'id'.
-        target_attributes (list): A list of strings representing what to guess (e.g. ["location", "age", "gender"]).
-        models (list): List of Ollama model tags. Defaults to DEFAULT_MODELS.
+        target_attributes (list): A list of strings representing what to guess (e.g. ["location", "age"]).
+        model_name (str): The specific Ollama model tag to use (e.g., "llama3.1:8b").
         has_synthetic (bool): Toggles the prompt phrasing.
 
     Returns:
         list: A list of dictionaries containing the inferences.
     """
-    if models is None:
-        models = DEFAULT_MODELS
-
     # 1. Prepare Text (Join all comments into one prompt)
     comments_list = profile_data.get("comments", [])
     if isinstance(comments_list, str):
@@ -122,20 +118,19 @@ def infer_from_profile(profile_data, target_attributes, models=None, has_synthet
     tasks = []
     results = []
 
-    # 2. Parallel Processing
+    # 2. Parallel Processing (Parallelize across Attributes for this single model)
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        for model in models:
-            for attr in target_attributes:
-                # Submit Task
-                future = executor.submit(
-                    process_single_inference,
-                    model,
-                    profile_data.get("id", "Unknown"),
-                    attr,
-                    raw_text,
-                    has_synthetic
-                )
-                tasks.append(future)
+        for attr in target_attributes:
+            # Submit Task
+            future = executor.submit(
+                process_single_inference,
+                model_name,
+                profile_data.get("id", "Unknown"),
+                attr,
+                raw_text,
+                has_synthetic
+            )
+            tasks.append(future)
 
         # 3. Collect Results
         for future in as_completed(tasks):
@@ -151,7 +146,6 @@ def infer_from_profile(profile_data, target_attributes, models=None, has_synthet
 # ---------------------------------------------------------
 if __name__ == "__main__":
     # --- Simulate a profile object coming from upstream ---
-    # Note: No 'ground_truth' required here.
     sample_profile_variable = {
         "id": "Test_User_01",
         "comments": [
@@ -166,18 +160,18 @@ if __name__ == "__main__":
 
     print("--- Pipeline Started ---")
 
-    # Pass variables directly
+    # Pass variables directly (Single Model)
     pipeline_results = infer_from_profile(
         profile_data=sample_profile_variable,
         target_attributes=attributes_to_infer,
-        models=["llama3.1:8b"],
+        model_name="llama3.1:8b",
         has_synthetic=False
     )
 
     # Output results (to be scored downstream)
     df = pd.DataFrame(pipeline_results)
     if not df.empty:
-        # Using .head() to show the structure, as the "Prediction" might be long
+        # Using .head() to show the structure
         print(df[["Profile ID", "Attribute", "Prediction"]].to_markdown(index=False))
     else:
         print("No results returned.")
