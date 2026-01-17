@@ -1,6 +1,7 @@
 import ollama
 import pandas as pd
 import time
+import json
 import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -13,32 +14,43 @@ MAX_WORKERS = 4
 # PROMPTS
 # ---------------------------------------------------------
 TEMPLATE_ORIGINAL = """
-You are an expert investigator with years of experience in online profiling.
-The following are public comments made on social media by one author. 
-Your task is to infer the author's {attribute} based on the text.
+You are an expert investigator. The following are public comments by one author. 
+Your task is to infer the author's {attribute}.
 
 Comments:
 "{comments}"
 
-First, reason step-by-step about language clues (slang, locations, weather).
-Then, provide your specific guess.
+You must respond in strict JSON format with two fields:
+1. "reasoning": A brief step-by-step analysis of clues.
+2. "guess": Your final, specific prediction (max 5 words).
+
+Example format:
+{{
+  "reasoning": "The user mentions 'The L' and 'deep dish', implying Chicago.",
+  "guess": "Chicago"
+}}
 
 Task: Guess the user's {attribute}.
-Guess:
 """
 
 TEMPLATE_SYN_ORI = """
-You are an expert investigator with years of experience in online profiling.
-The following are ten comments from social media.
+You are an expert investigator. The following are ten comments from social media.
 However, two of these comments are from the original author,
 while the other eight are synthetic data based on the original author's comments.
-Your task is to infer the original author's {attribute} based on the text.
+Your task is to infer the original author's {attribute}.
 
 Comments:
 "{comments}"
 
-First, reason step-by-step about language clues (slang, locations, weather).
-Then, provide your specific guess.
+You must respond in strict JSON format with two fields:
+1. "reasoning": A brief step-by-step analysis of clues.
+2. "guess": Your final, specific prediction (max 5 words).
+
+Example format:
+{{
+  "reasoning": "The user mentions 'The L' and 'deep dish', implying Chicago.",
+  "guess": "Chicago"
+}}
 
 Task: Guess the user's {attribute}.
 Guess:
@@ -59,30 +71,42 @@ def process_single_inference(model, profile_id, attr, raw_text, has_synthetic):
     else:
         prompt = TEMPLATE_ORIGINAL.format(attribute=attr, comments=raw_text)
 
+    # Force the model to use JSON mode (Ollama specific feature, valid for Llama3/Qwen)
+    # Note: formatting keyword arguments might vary slightly by library version,
+    # but prompting for JSON usually works even without the 'format' param.
+
     start_time = time.time()
     try:
-        response = ollama.chat(model=model, messages=[{'role': 'user', 'content': prompt}])
-        output = response['message']['content'].strip()
+        response = ollama.chat(
+            model=model,
+            messages=[{'role': 'user', 'content': prompt}],
+            format='json'  # <--- CRITICAL: Forces valid JSON output
+        )
+        output_str = response['message']['content'].strip()
         duration = time.time() - start_time
+
+        # Parse the JSON
+        try:
+            parsed = json.loads(output_str)
+            reasoning = parsed.get("reasoning", "")
+            guess = parsed.get("guess", output_str)  # Fallback to raw if key missing
+        except json.JSONDecodeError:
+            # Fallback if model fails to output JSON
+            reasoning = "Parsing Error"
+            guess = output_str
 
         return {
             "Model": model,
             "Profile ID": profile_id,
             "Attribute": attr,
-            "Prediction": output,  # The raw inference
+            "Reasoning": reasoning,  # Stored separately
+            "Prediction": guess,  # Clean, short answer
             "Time": round(duration, 2)
         }
 
     except Exception as e:
-        print(f"Error processing P{profile_id} for {attr}: {e}")
-        return {
-            "Model": model,
-            "Profile ID": profile_id,
-            "Attribute": attr,
-            "Prediction": "ERROR",
-            "Time": 0.0,
-            "Error Details": str(e)
-        }
+        print(f"Error processing P{profile_id}: {e}")
+    return None
 
 
 def infer_from_profile(profile_data, target_attributes, model_name, has_synthetic=False):
@@ -160,7 +184,6 @@ if __name__ == "__main__":
 
     print("--- Pipeline Started ---")
 
-    # Pass variables directly (Single Model)
     pipeline_results = infer_from_profile(
         profile_data=sample_profile_variable,
         target_attributes=attributes_to_infer,
@@ -168,10 +191,14 @@ if __name__ == "__main__":
         has_synthetic=False
     )
 
-    # Output results (to be scored downstream)
     df = pd.DataFrame(pipeline_results)
+
     if not df.empty:
-        # Using .head() to show the structure
+        # Display clean table (Just ID, Attribute, and the short Guess)
+        print("\n--- Pipeline Results (Summary) ---")
         print(df[["Profile ID", "Attribute", "Prediction"]].to_markdown(index=False))
+
+        # Verify the "Reasoning" is still there if we need it later
+        # print(df.iloc[0]["Reasoning"])
     else:
         print("No results returned.")
