@@ -8,16 +8,6 @@ from gliner import GLiNER
 GLINER_MODEL_NAME = "numind/NuNER_Zero-span"
 DEFAULT_THRESHOLD = 0.3
 
-# Define what PII/Sensitive categories you want to hunt for
-DEFAULT_LABELS = [
-    "occupation",
-    "medical condition",
-    "location",
-    "person",
-    "organization",
-    "hobby",
-    "age"
-]
 
 # ------------------------------------------------------------------
 # 1. LOAD MODEL (Global Resource)
@@ -48,7 +38,8 @@ def extract_pii_from_profile(profile_data, labels=None, threshold=DEFAULT_THRESH
         list: A list of dictionaries containing detected entities.
     """
     if labels is None:
-        labels = DEFAULT_LABELS
+        print('No label provided.')
+        return []
 
     # 1. Prepare Text (Join all comments into one block)
     # This matches the logic in the LLM inference script

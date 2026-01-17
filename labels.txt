@@ -1,0 +1,1 @@
+location, occupation, age, sex, medical condition
