@@ -102,7 +102,7 @@ if __name__ == "__main__":
     # Pass the variable directly
     pii_results = extract_pii_from_profile(
         profile_data=sample_profile_variable,
-        labels=["occupation", "location", "hobby", "medical condition"]  # Override defaults if needed
+        labels=["location", "occupation", "age", 'sex', 'medical condition']
     )
 
     # Output results
