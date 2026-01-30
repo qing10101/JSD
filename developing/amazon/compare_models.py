@@ -14,7 +14,7 @@ BASELINE_MODEL_NAME = "numind/NuNER_Zero-span"
 
 # MODEL B: The Specialist (Your Fine-Tuned Model)
 # Point this to the unzipped folder you just downloaded
-CUSTOM_MODEL_PATH = "gliner_finetuned_colab"
+CUSTOM_MODEL_PATH = "../gliner_finetuned_colab"
 
 # The labels you care about
 LABELS = [

@@ -6,8 +6,8 @@ from gliner import GLiNER
 # ------------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------------
-INPUT_FILE = "full_test.csv"
-OUTPUT_FILE = "filtered_dataset_1_3rd.csv"
+INPUT_FILE = "../full_test.csv"
+OUTPUT_FILE = "../filtered_dataset_1_3rd.csv"
 
 # LIMITS & THRESHOLDS
 MAX_INPUT_ROWS = None  # Set to None to process the whole file

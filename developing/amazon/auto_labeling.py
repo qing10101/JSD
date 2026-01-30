@@ -9,8 +9,8 @@ from threading import Lock
 # ------------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------------
-INPUT_FILE = "/Users/scottwang/PycharmProjects/JSD/developing/filtered_dataset_1_5th_2.csv"
-OUTPUT_FILE = "test_auto_labeled_new.csv"
+INPUT_FILE = "/developing/filtered_dataset_1_5th_2.csv"
+OUTPUT_FILE = "../test_auto_labeled_new.csv"
 MODEL_NAME = "gemma3:12b"
 ROWS_TO_PROCESS = 750  # Adjust as needed
 WORKERS = 4  # Matches your OLLAMA_NUM_PARALLEL setting
