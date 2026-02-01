@@ -3,7 +3,35 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="/developing/filtered_dataset.csv">
+        <entry key="/developing/amazon_new/amazon_labeled_groq.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/developing/amazon_new/amazon_labeled_groq_v2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/developing/amazon_new/amazon_to_label.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/developing/amazon_new/complete.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/developing/filtered_dataset_1_3rd.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -31,21 +59,14 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="/developing/test.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/developing/test_auto_labeled.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="/developing/test_auto_labeled_new.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/developing/yelp/yelp_to_label.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

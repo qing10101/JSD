@@ -1,0 +1,10 @@
+Using the base case model of our three candidates and LLM labels as ground truth,
+we performed a comparison between them:
+==========================================================================================
+🏆 GLiNER TRI-MODEL BENCHMARK SUMMARY
+==========================================================================================
+         Model  F1-Score  Precision  Recall  Hits (TP)  Misses (FN)  False Alarms (FP)
+    NuNER-Zero     0.556      0.508   0.614        151           95                146
+    NVIDIA-PII     0.401      0.657   0.289         71          175                 37
+GLiNER-X-Large     0.240      0.138   0.919        226           20               1410
+==========================================================================================
