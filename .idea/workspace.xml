@@ -4,18 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="92ac8a6b-0675-4be7-82c0-983b133d218b" name="Changes" comment="removing redundant file, adding files for yelp set">
-      <change afterPath="$PROJECT_DIR$/developing/amazon_new/auto_labeling_gpu.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/developing/amazon_new/auto_labeling_groq.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/developing/amazon_new/benchmark_gliner.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/developing/amazon_new/count_skips.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/developing/amazon_new/dataset_miner.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/developing/amazon_new/relabel_skips.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/yelp/create_training_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/developing/yelp/create_training_dataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-    </list>
+    <list default="true" id="92ac8a6b-0675-4be7-82c0-983b133d218b" name="Changes" comment="organizing existing files, adding files for new Amazon text" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -67,8 +56,8 @@
       <recent name="$PROJECT_DIR$/developing" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/developing/yelp" />
       <recent name="$PROJECT_DIR$/developing/amazon" />
+      <recent name="$PROJECT_DIR$/developing/yelp" />
       <recent name="$PROJECT_DIR$/developing" />
     </key>
   </component>
@@ -189,7 +178,23 @@
       <option name="project" value="LOCAL" />
       <updated>1769813278296</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="organizing existing files, adding files for new Amazon text">
+      <option name="closed" value="true" />
+      <created>1769977651480</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1769977651480</updated>
+    </task>
+    <task id="LOCAL-00011" summary="organizing existing files, adding files for new Amazon text">
+      <option name="closed" value="true" />
+      <created>1769977692602</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1769977692602</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -198,6 +203,7 @@
     <MESSAGE value="update for preprocessing, labeling, training and testing" />
     <MESSAGE value="removing redundant file" />
     <MESSAGE value="removing redundant file, adding files for yelp set" />
-    <option name="LAST_COMMIT_MESSAGE" value="removing redundant file, adding files for yelp set" />
+    <MESSAGE value="organizing existing files, adding files for new Amazon text" />
+    <option name="LAST_COMMIT_MESSAGE" value="organizing existing files, adding files for new Amazon text" />
   </component>
 </project>
