@@ -10,7 +10,7 @@ from groq import AsyncGroq, RateLimitError, BadRequestError
 # ------------------------------------------------------------------
 INPUT_FILE = "amazon_to_label.csv"
 OUTPUT_FILE = "amazon_labeled_groq_v2.csv"
-API_KEY = ""  # REPLACE THIS
+API_KEY = "gsk..."  # REPLACE THIS
 
 # Removed Qwen (it was causing JSON errors). Added Llama-3.3-70b.
 MODEL_POOL = [
