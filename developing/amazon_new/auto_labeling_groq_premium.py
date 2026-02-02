@@ -20,6 +20,12 @@ MODEL_POOL = [
     "meta-llama/llama-4-scout-17b-16e-instruct"  # Backup Leader (1k RPD)
 ]
 
+# MODEL_POOL = [
+#     "moonshotai/kimi-k2-instruct",
+#     "openai/gpt-oss-20b",
+#     "meta-llama/llama-4-maverick-17b-128e-instruct"
+# ]
+
 # Using 12 concurrent requests to maximize throughput across the pool
 MAX_CONCURRENT_REQUESTS = 12
 

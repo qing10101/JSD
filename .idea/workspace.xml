@@ -4,18 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="92ac8a6b-0675-4be7-82c0-983b133d218b" name="Changes" comment="organizing existing files, adding files for new Amazon text">
-      <change afterPath="$PROJECT_DIR$/developing/amazon_new/auto_labeling_groq_premium.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/developing/amazon_new/check_data_overlap.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/developing/amazon_new/evaluate_finetuned_model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/developing/amazon_new/label_benchmark_groq.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/trainer_requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon/compare_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/developing/amazon/compare_models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon/gliner_trainer_gpu.py" beforeDir="false" afterPath="$PROJECT_DIR$/developing/amazon/gliner_trainer_gpu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon_new/gliner_trainer_gpu.py" beforeDir="false" afterPath="$PROJECT_DIR$/developing/amazon_new/gliner_trainer_gpu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon_new/model_comparison" beforeDir="false" afterPath="$PROJECT_DIR$/developing/amazon_new/model_comparison" afterDir="false" />
-    </list>
+    <list default="true" id="92ac8a6b-0675-4be7-82c0-983b133d218b" name="Changes" comment="organizing existing files, adding files for new Amazon text" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -229,7 +218,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769977943445</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="organizing existing files, adding files for new Amazon text">
+      <option name="closed" value="true" />
+      <created>1770000613206</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1770000613206</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
