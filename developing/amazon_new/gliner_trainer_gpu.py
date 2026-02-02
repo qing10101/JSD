@@ -93,8 +93,9 @@ if __name__ == "__main__":
     # 4. Training Arguments (Tuned for A100 & 3,500 rows)
     args = TrainingArguments(
         output_dir=OUTPUT_DIR,
-        learning_rate=1e-5,  # Lower learning rate for fine-tuning
-        num_train_epochs=3,  # 3 is enough for this dataset size
+        learning_rate=5e-6,  # Lower learning rate for fine-tuning
+        num_train_epochs=6,  # 3 is enough for this dataset size
+        weight_decay=0.1,
 
         # A100 OPTIMIZATIONS
         per_device_train_batch_size=16,  # Higher batch size for A100

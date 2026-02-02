@@ -10,7 +10,7 @@ from gliner.data_processing.collator import SpanDataCollator
 # CONFIGURATION
 # ------------------------------------------------------------------
 INPUT_CSV = "test_auto_labeled_new.csv"
-OUTPUT_DIR = "../gliner_finetuned_colab"
+OUTPUT_DIR = "gliner_finetuned_colab"
 MODEL_NAME = "numind/NuNER_Zero-span"
 
 COLUMN_MAPPING = {
