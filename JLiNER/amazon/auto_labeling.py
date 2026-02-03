@@ -9,7 +9,7 @@ from threading import Lock
 # ------------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------------
-INPUT_FILE = "/developing/filtered_dataset_1_5th_2.csv"
+INPUT_FILE = "/JLiNER/filtered_dataset_1_5th_2.csv"
 OUTPUT_FILE = "test_auto_labeled_new.csv"
 MODEL_NAME = "gemma3:12b"
 ROWS_TO_PROCESS = 750  # Adjust as needed

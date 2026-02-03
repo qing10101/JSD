@@ -7,7 +7,7 @@ from tqdm import tqdm
 # ------------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------------
-INPUT_FILE = "/Users/scottwang/PycharmProjects/JSD/developing/yelp_dataset/yelp_academic_dataset_review.json"
+INPUT_FILE = "/JLiNER/yelp_dataset/yelp_academic_dataset_review.json"
 OUTPUT_FILE = "yelp_to_label.csv"
 
 # MODEL SELECTION

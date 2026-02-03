@@ -14,10 +14,10 @@ API_KEY = "YOUR_GROQ_API_KEY"  # Or set GROQ_API_KEY env var
 
 # FOR THE BENCHMARK: We use the smartest models first for maximum accuracy
 MODEL_POOL = [
-    "llama-3.3-70b-versatile",  # Primary: Best at complex context
-    "moonshotai/kimi-k2-instruct-0905",  # Backup smart model
-    "meta-llama/llama-4-scout-17b-16e-instruct",  # Secondary Backup
-    "llama-3.1-8b-instant"  # Last resort
+    "openai/gpt-oss-120b",
+    "moonshotai/kimi-k2-instruct-0905",
+    "moonshotai/kimi-k2-instruct",
+    "openai/gpt-oss-20b"
 ]
 
 MAX_CONCURRENT_REQUESTS = 5  # 70B models have lower RPM limits (usually 30)

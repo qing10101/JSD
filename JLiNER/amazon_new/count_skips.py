@@ -5,8 +5,8 @@ from collections import Counter
 # ------------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------------
-INPUT_FILE = "amazon_labeled_groq_v2.csv"
-SAFETY_FLAG = "SAFETY_FILTER_SKIP"
+INPUT_FILE = "amazon_gold_standard_labels.csv"
+SAFETY_FLAG = "FAILED_ALL_MODELS"
 
 
 def main():

@@ -7,7 +7,7 @@ from tqdm import tqdm
 # ------------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------------
-INPUT_FILE = "/Users/scottwang/PycharmProjects/JSD/developing/yelp_dataset/yelp_academic_dataset_review.json"
+INPUT_FILE = "/JLiNER/yelp_dataset/yelp_academic_dataset_review.json"
 LIMIT = 500
 THRESHOLD = 0.3  # Confidence threshold
 

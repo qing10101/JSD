@@ -9,7 +9,7 @@ from collections import defaultdict
 # CONFIGURATION
 # ------------------------------------------------------------------
 # The file created by your labeling script
-INPUT_FILE = "/Users/scottwang/PycharmProjects/JSD/developing/amazon/test_auto_labeled_new.csv"
+INPUT_FILE = "/JLiNER/amazon/test_auto_labeled_new.csv"
 
 # Paths to the models
 MODEL_FINETUNED = "gliner_nuner_finetuned"  # Your local folder
@@ -20,7 +20,7 @@ THRESHOLD = 0.5  # You can experiment with this (0.4 to 0.7)
 LABELS = [
     "occupation indication",
     "medical condition related",
-    "children/minor related"
+    "author's minor children related"
 ]
 
 # Map CSV columns to Model Labels for individual category scoring

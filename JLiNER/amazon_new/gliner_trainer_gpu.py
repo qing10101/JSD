@@ -16,7 +16,7 @@ MODEL_NAME = "numind/NuNER_Zero-span"  # The winner from your benchmark
 COLUMN_MAPPING = {
     "occupation_col": "occupation indication",
     "medical_col": "medical condition related",
-    "children_col": "children/minor related"
+    "children_col": "author's minor children related"
 }
 
 

@@ -4,8 +4,8 @@ import os
 # ------------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------------
-SMALL_SET_PATH = "/Users/scottwang/PycharmProjects/JSD/developing/amazon/test_auto_labeled_new.csv"  # Your first 750-row file
-BIG_SET_PATH = "/Users/scottwang/PycharmProjects/JSD/developing/amazon_new/complete.csv"  # Your new 3500-row file
+SMALL_SET_PATH = "/JLiNER/amazon/test_auto_labeled_new.csv"  # Your first 750-row file
+BIG_SET_PATH = "/JLiNER/amazon_new/complete.csv"  # Your new 3500-row file
 
 # Update these if your column names differ
 SMALL_TEXT_COL = "original_sentence"

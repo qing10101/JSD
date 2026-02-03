@@ -1,4 +1,4 @@
-filename = '/developing/yelp_dataset/yelp_academic_dataset_review.json'
+filename = '/JLiNER/yelp_dataset/yelp_academic_dataset_review.json'
 count = 0
 
 print(f"Counting entries in {filename}...")

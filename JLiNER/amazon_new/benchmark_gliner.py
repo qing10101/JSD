@@ -22,7 +22,7 @@ MODELS = {
 LABELS = [
     "occupation indication",
     "medical condition related",
-    "children/minor related"
+    "author's minor children related"
 ]
 
 

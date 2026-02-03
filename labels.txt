@@ -1,1 +1,3 @@
-location, occupation, age, sex, medical condition
+occupation indication
+medical condition related
+author's minor children related
