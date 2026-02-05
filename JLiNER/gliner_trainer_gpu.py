@@ -114,7 +114,7 @@ def run_evaluation(model, dataloader, device):
 
 
 # ------------------------------------------------------------------
-# MAIN TRAINING LOOP
+# MAIN TRAINING LOOP (With 'Save Best' Logic)
 # ------------------------------------------------------------------
 def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -122,7 +122,7 @@ def main():
     # 1. Load Model
     model = GLiNER.from_pretrained(MODEL_NAME)
 
-    # 2. Prepare Data & Split (90/10)
+    # 2. Prepare Data & Split
     all_data = prepare_data_neural_safe(INPUT_CSV, model)
     random.seed(42)
     random.shuffle(all_data)
@@ -141,18 +141,21 @@ def main():
     # 4. Optimizer
     optimizer = torch.optim.AdamW(model.parameters(), lr=LEARNING_RATE)
 
+    # --- BEST MODEL TRACKING ---
+    best_eval_loss = float('inf')  # Initialize as infinity
+    # ---------------------------
+
     print(f"\n🚀 Training on {len(train_data)} samples | Evaluating on {len(eval_data)} samples")
     print("-" * 60)
 
-    # Inside the Epoch Loop:
     for epoch in range(EPOCHS):
         model.train()
         total_train_loss = 0
         train_batches = 0
 
-        data_iter = iter(train_loader)
-        optimizer.zero_grad()  # Initialize zero grad at start of epoch
+        pbar = tqdm(enumerate(train_loader), total=len(train_loader), desc=f"Epoch {epoch + 1}/{EPOCHS} [Train]")
 
+        data_iter = iter(train_loader)
         for i in range(len(train_loader)):
             try:
                 batch = next(data_iter)
@@ -161,25 +164,28 @@ def main():
 
             batch = {k: v.to(device) if isinstance(v, torch.Tensor) else v for k, v in batch.items()}
 
+            optimizer.zero_grad()
             try:
-                # We DON'T call optimizer.zero_grad() here anymore
                 with torch.cuda.amp.autocast(dtype=torch.bfloat16):
-                    outputs = model(**batch)
-                    # Divide loss by accumulation steps to average the gradient
-                    loss = outputs.loss / ACCUMULATION_STEPS
+                    outputs = model(
+                        input_ids=batch['input_ids'],
+                        attention_mask=batch['attention_mask'],
+                        words_mask=batch['words_mask'],
+                        text_lengths=batch['text_lengths'],
+                        span_idx=batch['span_idx'],
+                        span_mask=batch['span_mask'],
+                        labels=batch['labels']
+                    )
+                    loss = outputs.loss
 
                 loss.backward()
+                optimizer.step()
 
-                # ONLY UPDATE WEIGHTS every 'ACCUMULATION_STEPS'
-                if (i + 1) % ACCUMULATION_STEPS == 0:
-                    optimizer.step()
-                    optimizer.zero_grad()
-
-                total_train_loss += outputs.loss.item()
+                total_train_loss += loss.item()
                 train_batches += 1
-
-            except Exception as e:
-                # If batch fails, clear the accumulated gradients to prevent "poisoning" the next batch
+                pbar.update(1)
+                pbar.set_postfix({"loss": f"{loss.item():.4f}"})
+            except:
                 optimizer.zero_grad()
                 continue
 
@@ -190,11 +196,18 @@ def main():
         print(f"\n📊 EPOCH {epoch + 1} SUMMARY:")
         print(f"   Avg Train Loss: {avg_train_loss:.4f}")
         print(f"   Avg Eval Loss:  {avg_eval_loss:.4f}")
+
+        # --- SAVE BEST MODEL LOGIC ---
+        if avg_eval_loss < best_eval_loss:
+            best_eval_loss = avg_eval_loss
+            print(f"🌟 NEW BEST MODEL FOUND! Saving to '{OUTPUT_DIR}'...")
+            model.save_pretrained(OUTPUT_DIR)
+        else:
+            print(f"⚠️ Eval loss did not improve (Best: {best_eval_loss:.4f}). Skipping save.")
+
         print("-" * 60)
 
-    # 5. Save
-    model.save_pretrained(OUTPUT_DIR)
-    print(f"🎉 Training Complete. Model saved to {OUTPUT_DIR}")
+    print(f"\n🎉 Training Complete. The best version (Loss: {best_eval_loss:.4f}) is in '{OUTPUT_DIR}'")
 
 
 if __name__ == "__main__":
