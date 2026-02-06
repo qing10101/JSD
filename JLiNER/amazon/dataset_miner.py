@@ -8,7 +8,7 @@ from tqdm import tqdm
 # ------------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------------
-INPUT_FILE = "/JLiNER/amazon_new/Unknown.jsonl"
+INPUT_FILE = "Unknown.jsonl"
 OUTPUT_FILE = "amazon_to_label.csv"
 
 # CRITICAL: Use the SMALL model for multiprocessing to save RAM

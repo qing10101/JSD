@@ -8,7 +8,7 @@ from tqdm import tqdm
 # ------------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------------
-INPUT_FILE = "complete.csv"
+INPUT_FILE = "gold_final_cleaned.csv"
 SAMPLE_SIZE = 300  # Number of rows to benchmark
 THRESHOLD = 0.35  # Standard confidence threshold
 

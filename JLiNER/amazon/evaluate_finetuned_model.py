@@ -9,11 +9,13 @@ from collections import defaultdict
 # CONFIGURATION
 # ------------------------------------------------------------------
 # The file created by your labeling script
-INPUT_FILE = "/JLiNER/amazon/test_auto_labeled_new.csv"
+INPUT_FILE = "complete.csv"
 
 # Paths to the models
-MODEL_FINETUNED = "gliner_nuner_finetuned"  # Your local folder
+MODEL_FINETUNED = ""  # Your local folder
 MODEL_BASELINE = "numind/NuNER_Zero-span"  # The original
+
+ROW_LIMIT = 500
 
 # Evaluation Settings
 THRESHOLD = 0.5  # You can experiment with this (0.4 to 0.7)
@@ -27,7 +29,7 @@ LABELS = [
 COL_MAP = {
     "occupation_col": "occupation indication",
     "medical_col": "medical condition related",
-    "children_col": "children/minor related"
+    "children_col": "author's minor children related"
 }
 
 
@@ -49,8 +51,11 @@ def evaluate_model(model_path, df):
     # Trackers per category: { label: {tp: 0, fp: 0, fn: 0} }
     stats = {label: {"tp": 0, "fp": 0, "fn": 0} for label in LABELS}
 
-    for _, row in tqdm(df.iterrows(), total=len(df), desc="Analyzing Rows"):
-        text = str(row['original_sentence'])
+    processed_rows = 0
+
+    for _, row in tqdm(df.iterrows(), total=ROW_LIMIT, desc="Analyzing Rows"):
+        text = str(row['original_text'])
+        processed_rows += 1
 
         # 1. Get Ground Truth for this row
         gt_by_cat = {}
@@ -85,6 +90,9 @@ def evaluate_model(model_path, df):
 
             # Remaining predictions are False Positives
             stats[label]["fp"] += len(prs)
+
+        if processed_rows > ROW_LIMIT:
+            break
 
     return stats
 

@@ -10,7 +10,7 @@ from threading import Lock
 # CONFIGURATION
 # ------------------------------------------------------------------
 INPUT_FILE = "test.csv"
-MODEL_NAME = "llama3.1:8b"  # or "mistral"
+MODEL_NAME = "gemma3:12b"  # or "mistral"
 WORKERS = 4  # Number of parallel threads
 
 # The categories we want to track

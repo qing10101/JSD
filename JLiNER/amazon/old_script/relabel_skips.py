@@ -8,7 +8,7 @@ from threading import Lock
 # ------------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------------
-INPUT_FILE = "amazon_labeled_groq_v2.csv"
+INPUT_FILE = "../old_data/amazon_labeled_groq_v2.csv"
 OUTPUT_FILE = "amazon_labeled_complete.csv"
 MODEL_NAME = "gemma3n:e2b"
 WORKERS = 4  # Your M3 Max can handle this easily

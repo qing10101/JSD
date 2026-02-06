@@ -1,160 +1,214 @@
 import os
 import random
-import torch
 import pandas as pd
+import torch
+from torch.utils.data import DataLoader
 from gliner import GLiNER
-from gliner.training import Trainer, TrainingArguments
-from gliner.data_processing.collator import SpanDataCollator
+import re
+from tqdm import tqdm
+
+# --- IMPORT FIX ---
+try:
+    from gliner.data_processing.collator import SpanDataCollator as MyCollator
+except ImportError:
+    from gliner.data_processing.collator import DataCollator as MyCollator
 
 # ------------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------------
-INPUT_CSV = "test_auto_labeled_new.csv"
-OUTPUT_DIR = "gliner_finetuned_colab"
+INPUT_CSV = "gold_final_cleaned.csv"
+OUTPUT_DIR = "round 3"
 MODEL_NAME = "numind/NuNER_Zero-span"
+BATCH_SIZE = 4           # Small batch to minimize data loss per skip
+ACCUMULATION_STEPS = 2   # Update weights every 2 batches (4x2 = 8 effective batch size)
+LEARNING_RATE = 5e-6
+EPOCHS = 3
 
 COLUMN_MAPPING = {
     "occupation_col": "occupation indication",
     "medical_col": "medical condition related",
-    "children_col": "children/minor related"
+    "children_col": "author's minor children related"
 }
 
 
 # ------------------------------------------------------------------
-# DATA PREPARATION
+# DATA PREPARATION (Includes Neural Diagnostic)
 # ------------------------------------------------------------------
-def prepare_data(csv_path):
-    if not os.path.exists(csv_path):
-        print(f"❌ Error: {csv_path} not found. Please upload it to Colab files.")
-        return []
+def robust_normalize(text):
+    if not text or pd.isna(text): return ""
+    text = str(text).lower()
+    text = re.sub(r'[^a-z0-9\s]', '', text)
+    return " ".join(text.split())
 
+
+def prepare_data_neural_safe(csv_path, model):
     df = pd.read_csv(csv_path)
-    training_data = []
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.to(device)
+    model.eval()
 
-    print(f"📂 Reading {len(df)} rows...")
+    clean_data = []
+    print(f"📂 Diagnostic Check: Testing {len(df)} rows...")
 
-    for _, row in df.iterrows():
-        # Ensure text is a string
-        text = str(row.get('original_sentence', ''))
-        if not text or text.lower() == 'nan': continue
+    for _, row in tqdm(df.iterrows(), total=len(df)):
+        text = str(row.get('original_text', '')).strip()
+        if not text or len(text.split()) < 10: continue
 
-        # Simple whitespace tokenization
         tokens = text.split()
-        if not tokens: continue
-
         entities = []
         for csv_col, label_name in COLUMN_MAPPING.items():
             if csv_col not in df.columns: continue
-
-            cell_value = str(row[csv_col])
-            if cell_value.lower() in ['nan', '', 'none']: continue
-
-            # Split multiple entries by semicolon
-            phrases = [p.strip() for p in cell_value.split(';') if p.strip()]
-
+            val = str(row[csv_col])
+            if val.lower() in ['nan', '', 'none']: continue
+            phrases = [p.strip() for p in val.split(';') if p.strip()]
             for phrase in phrases:
-                phrase_words = phrase.split()
-                len_phrase = len(phrase_words)
-
-                # Find the phrase in the token list
-                for i in range(len(tokens) - len_phrase + 1):
-                    window = tokens[i: i + len_phrase]
-                    # Normalize for matching
-                    window_clean = " ".join(window).lower().replace(",", "").replace(".", "")
-                    phrase_clean = " ".join(phrase_words).lower().replace(",", "").replace(".", "")
-
-                    if window_clean == phrase_clean:
-                        entities.append([i, i + len_phrase - 1, label_name])
+                target_norm = robust_normalize(phrase)
+                for i in range(len(tokens) - len(phrase.split()) + 1):
+                    if target_norm == robust_normalize(" ".join(tokens[i: i + len(phrase.split())])):
+                        entities.append([i, i + len(phrase.split()) - 1, label_name])
                         break
 
-                        # Only add rows that actually have entities to learn
-        if entities:
-            training_data.append({"tokenized_text": tokens, "ner": entities})
+        try:
+            with torch.no_grad():
+                _ = model.predict_entities(text, labels=["test"], threshold=0.5)
+            clean_data.append({"tokenized_text": tokens, "ner": entities})
+        except:
+            continue
 
-    print(f"✅ Prepared {len(training_data)} valid training samples.")
-    return training_data
+    return clean_data
 
 
 # ------------------------------------------------------------------
-# MAIN
+# EVALUATION FUNCTION
 # ------------------------------------------------------------------
-if __name__ == "__main__":
-    # 1. Prepare Data
-    raw_data = prepare_data(INPUT_CSV)
-    if not raw_data:
-        print("❌ Script stopped. No data.")
-        exit()
+def run_evaluation(model, dataloader, device):
+    model.eval()
+    total_eval_loss = 0
+    valid_batches = 0
 
-    # 2. Split Data (Simple List Slice)
-    random.seed(42)
-    random.shuffle(raw_data)
-    split_idx = int(len(raw_data) * 0.9)
-    train_set = raw_data[:split_idx]
-    eval_set = raw_data[split_idx:]
+    # We use iter to handle potential collator crashes in eval set too
+    data_iter = iter(dataloader)
 
-    print(f"📊 Train: {len(train_set)} | Eval: {len(eval_set)}")
+    for _ in range(len(dataloader)):
+        try:
+            batch = next(data_iter)
+            batch = {k: v.to(device) if isinstance(v, torch.Tensor) else v for k, v in batch.items()}
 
-    # 3. Load Model
-    print(f"⏳ Loading Model: {MODEL_NAME}...")
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    print(f"   - Using Device: {device.upper()}")
+            with torch.no_grad():
+                with torch.cuda.amp.autocast(dtype=torch.bfloat16):
+                    outputs = model(
+                        input_ids=batch['input_ids'],
+                        attention_mask=batch['attention_mask'],
+                        words_mask=batch['words_mask'],
+                        text_lengths=batch['text_lengths'],
+                        span_idx=batch['span_idx'],
+                        span_mask=batch['span_mask'],
+                        labels=batch['labels']
+                    )
+                    total_eval_loss += outputs.loss.item()
+                    valid_batches += 1
+        except:
+            continue
 
+    return total_eval_loss / valid_batches if valid_batches > 0 else 0
+
+
+# ------------------------------------------------------------------
+# MAIN TRAINING LOOP (With 'Save Best' Logic)
+# ------------------------------------------------------------------
+def main():
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    # 1. Load Model
     model = GLiNER.from_pretrained(MODEL_NAME)
-    model.to(device)
 
-    # 4. Setup Collator
-    if hasattr(model, "data_processor"):
-        data_processor = model.data_processor
-    else:
-        data_processor = model
+    # 2. Prepare Data & Split
+    all_data = prepare_data_neural_safe(INPUT_CSV, model)
+    random.seed(42)
+    random.shuffle(all_data)
 
-    data_collator = SpanDataCollator(model.config, data_processor=data_processor, prepare_labels=True)
+    split_idx = int(len(all_data) * 0.9)
+    train_data = all_data[:split_idx]
+    eval_data = all_data[split_idx:]
 
-    # 5. Training Config (Optimized for Colab GPU)
-    args = TrainingArguments(
-        output_dir=OUTPUT_DIR,
-        learning_rate=5e-6,
-        num_train_epochs=10,
-        per_device_train_batch_size=8,  # T4 GPU can handle batch size 8 easily
-        per_device_eval_batch_size=8,
-        weight_decay=0.1,
-        eval_strategy="steps",
-        save_steps=50,
-        eval_steps=50,
-        save_total_limit=2,
-        load_best_model_at_end=True,
-        report_to="none",
-        fp16=True,  # ENABLE MIXED PRECISION (Crucial for Colab speed/memory)
-        remove_unused_columns=False
-    )
+    # 3. Setup Loaders
+    data_processor = model.data_processor if hasattr(model, "data_processor") else model
+    collator = MyCollator(model.config, data_processor=data_processor, prepare_labels=True)
 
-    # 6. Train
-    trainer = Trainer(
-        model=model,
-        args=args,
-        train_dataset=train_set,
-        eval_dataset=eval_set,
-        data_collator=data_collator
-    )
+    train_loader = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True, collate_fn=collator)
+    eval_loader = DataLoader(eval_data, batch_size=BATCH_SIZE, shuffle=False, collate_fn=collator)
 
-    print("🚀 Starting Training...")
-    trainer.train()
+    # 4. Optimizer
+    optimizer = torch.optim.AdamW(model.parameters(), lr=LEARNING_RATE)
 
-    print(f"💾 Saving model to '{OUTPUT_DIR}'...")
-    model.save_pretrained(OUTPUT_DIR)
-    print("✅ Done!")
-    print("\n🔍 SANITY CHECK (Visual Inspection)")
-    # Load the best model we just trained
-    model = GLiNER.from_pretrained(OUTPUT_DIR)
-    model.to("cuda")
+    # --- BEST MODEL TRACKING ---
+    best_eval_loss = float('inf')  # Initialize as infinity
+    # ---------------------------
 
-    test_sentences = [
-        "I had to leave my shift early to take my son to the doctor for his asthma.",
-        "This job is killing my back."
-    ]
+    print(f"\n🚀 Training on {len(train_data)} samples | Evaluating on {len(eval_data)} samples")
+    print("-" * 60)
 
-    for text in test_sentences:
-        print(f"\nText: {text}")
-        entities = model.predict_entities(text, list(COLUMN_MAPPING.values()), threshold=0.3)
-        for e in entities:
-            print(f"  👉 Found: '{e['text']}' -> {e['label']} ({e['score']:.1%})")
+    for epoch in range(EPOCHS):
+        model.train()
+        total_train_loss = 0
+        train_batches = 0
+
+        pbar = tqdm(enumerate(train_loader), total=len(train_loader), desc=f"Epoch {epoch + 1}/{EPOCHS} [Train]")
+
+        data_iter = iter(train_loader)
+        for i in range(len(train_loader)):
+            try:
+                batch = next(data_iter)
+            except:
+                continue
+
+            batch = {k: v.to(device) if isinstance(v, torch.Tensor) else v for k, v in batch.items()}
+
+            optimizer.zero_grad()
+            try:
+                with torch.cuda.amp.autocast(dtype=torch.bfloat16):
+                    outputs = model(
+                        input_ids=batch['input_ids'],
+                        attention_mask=batch['attention_mask'],
+                        words_mask=batch['words_mask'],
+                        text_lengths=batch['text_lengths'],
+                        span_idx=batch['span_idx'],
+                        span_mask=batch['span_mask'],
+                        labels=batch['labels']
+                    )
+                    loss = outputs.loss
+
+                loss.backward()
+                optimizer.step()
+
+                total_train_loss += loss.item()
+                train_batches += 1
+                pbar.update(1)
+                pbar.set_postfix({"loss": f"{loss.item():.4f}"})
+            except:
+                optimizer.zero_grad()
+                continue
+
+        # --- EVALUATION PHASE ---
+        avg_train_loss = total_train_loss / train_batches if train_batches > 0 else 0
+        avg_eval_loss = run_evaluation(model, eval_loader, device)
+
+        print(f"\n📊 EPOCH {epoch + 1} SUMMARY:")
+        print(f"   Avg Train Loss: {avg_train_loss:.4f}")
+        print(f"   Avg Eval Loss:  {avg_eval_loss:.4f}")
+
+        # --- SAVE BEST MODEL LOGIC ---
+        if avg_eval_loss < best_eval_loss:
+            best_eval_loss = avg_eval_loss
+            print(f"🌟 NEW BEST MODEL FOUND! Saving to '{OUTPUT_DIR}'...")
+            model.save_pretrained(OUTPUT_DIR)
+        else:
+            print(f"⚠️ Eval loss did not improve (Best: {best_eval_loss:.4f}). Skipping save.")
+
+        print("-" * 60)
+
+    print(f"\n🎉 Training Complete. The best version (Loss: {best_eval_loss:.4f}) is in '{OUTPUT_DIR}'")
+
+
+if __name__ == "__main__":
+    main()

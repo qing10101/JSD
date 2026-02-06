@@ -5,29 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="92ac8a6b-0675-4be7-82c0-983b133d218b" name="Changes" comment="organizing existing files, adding files for new Amazon text">
+      <change afterPath="$PROJECT_DIR$/JLiNER/amazon_new/filter_training_data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon/auto_labeling.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon/auto_labeling.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon/compare_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon/compare_models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon/data_preprocessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon/data_preprocessing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon/gliner_trainer_gpu.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon/gliner_trainer_gpu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon/statistical_analysis_llm.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon/statistical_analysis_llm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon_new/auto_labeling_gpu.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/auto_labeling_gpu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon_new/auto_labeling_groq.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/auto_labeling_groq.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon_new/auto_labeling_groq_premium.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/auto_labeling_groq_premium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon_new/benchmark_gliner.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/benchmark_gliner.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon_new/check_data_overlap.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/check_data_overlap.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon_new/count_skips.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/count_skips.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon_new/dataset_miner.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/dataset_miner.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon_new/evaluate_finetuned_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/evaluate_finetuned_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon_new/gliner_trainer_gpu.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/gliner_trainer_gpu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon_new/label_benchmark_groq.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/label_benchmark_groq.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon_new/model_comparison" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/model_comparison" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/amazon_new/relabel_skips.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/relabel_skips.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/yelp/count_entries.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/yelp/count_entries.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/yelp/create_training_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/yelp/create_training_dataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/developing/yelp/statistical_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/yelp/statistical_analysis.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/labels.txt" beforeDir="false" afterPath="$PROJECT_DIR$/labels.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JLiNER/amazon/auto_labeling.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon/auto_labeling.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JLiNER/amazon/gliner_trainer_gpu.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon/gliner_trainer_gpu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JLiNER/amazon_new/auto_labeling_gpu.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/auto_labeling_gpu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JLiNER/amazon_new/auto_labeling_groq.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/JLiNER/amazon_new/auto_labeling_groq_premium.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/auto_labeling_groq_premium.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JLiNER/amazon_new/count_skips.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/count_skips.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JLiNER/amazon_new/evaluate_finetuned_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/evaluate_finetuned_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JLiNER/amazon_new/gliner_trainer_gpu.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/gliner_trainer_gpu.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,17 +53,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.benchmark_llm.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/scottwang/PycharmProjects/JSD/developing/amazon_new&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.benchmark_llm.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/scottwang/PycharmProjects/JSD/JLiNER/amazon"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/JLiNER/amazon" />
       <recent name="$PROJECT_DIR$/developing/amazon_new" />
       <recent name="$PROJECT_DIR$/developing" />
     </key>
@@ -258,7 +247,23 @@
       <option name="project" value="LOCAL" />
       <updated>1770053103907</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="organizing existing files, adding files for new Amazon text">
+      <option name="closed" value="true" />
+      <created>1770139090338</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1770139090338</updated>
+    </task>
+    <task id="LOCAL-00018" summary="organizing existing files, adding files for new Amazon text">
+      <option name="closed" value="true" />
+      <created>1770248160279</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1770248160279</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

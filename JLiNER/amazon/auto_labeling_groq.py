@@ -9,8 +9,8 @@ from groq import AsyncGroq, RateLimitError, BadRequestError
 # CONFIGURATION
 # ------------------------------------------------------------------
 INPUT_FILE = "amazon_to_label.csv"
-OUTPUT_FILE = "amazon_gold_labeled_v4.csv"
-API_KEY = "YOUR_GROQ_API_KEY"
+OUTPUT_FILE = "gold.csv"
+API_KEY = "gsk..." # API Key goes here
 
 # THE POOL
 MODEL_POOL = [
