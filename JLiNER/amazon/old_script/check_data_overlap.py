@@ -4,12 +4,12 @@ import os
 # ------------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------------
-SMALL_SET_PATH = "/JLiNER/amazon/test_auto_labeled_new.csv"  # Your first 750-row file
-BIG_SET_PATH = "/JLiNER/amazon_new/complete.csv"  # Your new 3500-row file
+SMALL_SET_PATH = "//Users/scottwang/PycharmProjects/JSD/JLiNER/amazon/gold_final_cleaned.csv"  # Your first file
+BIG_SET_PATH = "/Users/scottwang/PycharmProjects/JSD/JLiNER/reserve_data/test.csv"  # Your second file
 
 # Update these if your column names differ
-SMALL_TEXT_COL = "original_sentence"
-BIG_TEXT_COL = "original_text"
+SMALL_TEXT_COL = "original_text"
+BIG_TEXT_COL = "ori_review"
 
 
 def normalize(text):
@@ -56,9 +56,9 @@ def main():
         print(f"\n✅ SUCCESS: You have {unique_to_small} rows you can use for evaluation.")
 
         # Optionally save the 'Clean' rows to a new file
-        clean_df = df_small[~df_small[SMALL_TEXT_COL].apply(normalize).isin(big_texts)]
-        clean_df.to_csv("clean_benchmark_set.csv", index=False)
-        print(f"💾 Saved {len(clean_df)} clean rows to 'clean_benchmark_set.csv'")
+        # clean_df = df_small[~df_small[SMALL_TEXT_COL].apply(normalize).isin(big_texts)]
+        # clean_df.to_csv("clean_benchmark_set.csv", index=False)
+        # print(f"💾 Saved {len(clean_df)} clean rows to 'clean_benchmark_set.csv'")
     else:
         print("\n❌ WARNING: Your small set is entirely contained within your training data.")
         print("   You cannot use this for evaluation.")
