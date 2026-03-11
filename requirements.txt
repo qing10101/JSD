@@ -12,3 +12,5 @@ groq
 scikit-learn
 stanza
 langdetect
+seaborn
+matplotlib
