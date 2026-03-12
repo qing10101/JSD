@@ -16,8 +16,8 @@ except ImportError:
 # ------------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------------
-INPUT_CSV = "gold_final_cleaned.csv"
-OUTPUT_DIR = "round 3"
+INPUT_CSV = "augmented_test_cleaned.csv"
+OUTPUT_DIR = "round Alpha"
 MODEL_NAME = "numind/NuNER_Zero-span"
 BATCH_SIZE = 4           # Small batch to minimize data loss per skip
 ACCUMULATION_STEPS = 2   # Update weights every 2 batches (4x2 = 8 effective batch size)
@@ -25,9 +25,9 @@ LEARNING_RATE = 5e-6
 EPOCHS = 3
 
 COLUMN_MAPPING = {
-    "occupation_col": "occupation indication",
+    "gender_col": "reviewer's gender indication",
     "medical_col": "medical condition related",
-    "children_col": "author's minor children related"
+    "minor_col": "minor children related"
 }
 
 
