@@ -8,9 +8,9 @@ from groq import AsyncGroq, RateLimitError, BadRequestError
 # ------------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------------
-INPUT_FILE = "amazon_to_label.csv"
-OUTPUT_FILE = "gold.csv"
-API_KEY = "gsk..." # API Key goes here
+INPUT_FILE = "/Users/scottwang/PycharmProjects/JSD/JLiNER/amazon/merged_test.csv"
+OUTPUT_FILE = "merged_test_llm.csv"
+API_KEY = "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" # API Key goes here
 
 # THE POOL
 MODEL_POOL = [
@@ -23,19 +23,31 @@ MODEL_POOL = [
 MAX_CONCURRENT_REQUESTS = 12
 
 # ------------------------------------------------------------------
-# SYSTEM PROMPT (Semantic Labeling)
+# SYSTEM PROMPT (Strict Inference-Based Labeling)
 # ------------------------------------------------------------------
-SYSTEM_PROMPT = """You are a strict PII Auditor. Output strictly valid JSON.
-Extract exact substrings for 3 specific categories.
+SYSTEM_PROMPT = """You are a High-Precision PII Auditor. Output strictly valid JSON.
+Your goal is to extract EXACT substrings that provide a direct inference for the following categories:
 
 CATEGORIES:
-1. "occupation_col": Professional roles/tasks (e.g., "nurse", "grading"). NO hobbies, NO generic staff.
-2. "medical_col": Diagnosed diseases or chronic conditions. NO general pain.
-3. "children_col": The AUTHOR'S OWN minor children ONLY.
-   Label: "author's minor children related".
-   Criteria: Look for "my son", "our daughter", etc. IGNORE hypothetical or adult children.
+1. "gender_col": Substrings that allow a direct inference of the AUTHOR'S (the reviewer's) gender.
+   - Examples: "As a mom", "Being a guy", "My husband bought this for me".
+   - IGNORE: Gender of people mentioned in the text who are not the author.
 
-Return: {"occupation_col": "", "medical_col": "", "children_col": ""}"""
+2. "medical_col": Substrings that provide a direct inference to a real person's medical condition.
+   - Includes: Diagnosed diseases, chronic conditions, symptoms, or specific medical treatments.
+   - Examples: "my diabetes", "inhaler for my asthma", "post-surgery recovery".
+   - IGNORE: General, non-specific pain (e.g., "headache", "my back hurts") unless linked to a chronic condition.
+
+3. "minor_col": Substrings that provide a direct inference to a REAL child (not a fictional character) under the age of 18.
+   - Examples: "my toddler", "son's 5th birthday", "my 3rd grader", "picking kids up from daycare".
+   - CRITICAL: Exclude characters from books, movies, or games. 
+   - CRITICAL: Exclude references where the "child" could be an adult (e.g., "visiting my son" is NOT a minor inference unless age/context is provided).
+
+INSTRUCTIONS:
+- Extract the EXACT substring from the text.
+- If multiple distinct inferences exist in one category, separate them with a semicolon (;).
+- If no direct inference exists for a category, return an empty string "".
+- Output Format: {"gender_col": "", "medical_col": "", "minor_col": ""}"""
 
 # ------------------------------------------------------------------
 # LOGIC
@@ -45,7 +57,7 @@ client = AsyncGroq(api_key=API_KEY)
 
 async def process_row(row, semaphore):
     text = row.get('original_text') or row.get('original_sentence') or ""
-    row.update({'occupation_col': '', 'medical_col': '', 'children_col': '', 'model_used': ''})
+    row.update({'gender_col': '', 'medical_col': '', 'minor_col': '', 'model_used': ''})
 
     if not text: return row
 
@@ -64,9 +76,9 @@ async def process_row(row, semaphore):
 
                 data = json.loads(response.choices[0].message.content)
                 row.update({
-                    'occupation_col': data.get('occupation_col') or '',
+                    'gender_col': data.get('gender_col') or '',
                     'medical_col': data.get('medical_col') or '',
-                    'children_col': data.get('children_col') or '',
+                    'minor_col': data.get('minor_col') or '',
                     'model_used': model
                 })
                 return row
@@ -119,7 +131,7 @@ async def main():
     tasks = [process_row(row, semaphore) for row in rows_to_do]
 
     fieldnames = list(rows[0].keys())
-    for col in ['occupation_col', 'medical_col', 'children_col', 'model_used']:
+    for col in ['gender_col', 'medical_col', 'minor_col', 'model_used']:
         if col not in fieldnames: fieldnames.append(col)
 
     with open(OUTPUT_FILE, 'a', encoding='utf-8-sig', newline='') as f:

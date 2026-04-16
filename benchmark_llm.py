@@ -180,7 +180,7 @@ if __name__ == "__main__":
     }
 
     # Define what we want the pipeline to find
-    attributes_to_infer = ["location", "occupation", "age", 'sex', 'medical condition']
+    attributes_to_infer = ["location", "gender", "age", 'sex', 'medical condition']
 
     print("--- Pipeline Started ---")
 

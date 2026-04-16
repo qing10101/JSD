@@ -4,12 +4,12 @@ import os
 # ------------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------------
-SMALL_SET_PATH = "//Users/scottwang/PycharmProjects/JSD/JLiNER/amazon/gold_final_cleaned.csv"  # Your first file
-BIG_SET_PATH = "/Users/scottwang/PycharmProjects/JSD/JLiNER/reserve_data/test.csv"  # Your second file
+SMALL_SET_PATH = "/Users/scottwang/PycharmProjects/JSD/JLiNER/amazon/merged_test.csv"  # Your first file
+BIG_SET_PATH = "/Users/scottwang/PycharmProjects/JSD/JLiNER/amazon/merged_test_llm.csv"  # Your second file
 
 # Update these if your column names differ
 SMALL_TEXT_COL = "original_text"
-BIG_TEXT_COL = "ori_review"
+BIG_TEXT_COL = "original_text"
 
 
 def normalize(text):

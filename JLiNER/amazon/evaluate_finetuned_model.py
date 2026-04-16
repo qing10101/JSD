@@ -1,6 +1,7 @@
 import pandas as pd
 import torch
 import os
+import re
 from gliner import GLiNER
 from tqdm import tqdm
 from collections import defaultdict
@@ -8,34 +9,48 @@ from collections import defaultdict
 # ------------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------------
-# The file created by your labeling script
-INPUT_FILE = "complete.csv"
+INPUT_FILE = "/Users/scottwang/PycharmProjects/JSD/old_sheet.csv"
 
 # Paths to the models
-MODEL_FINETUNED = ""  # Your local folder
-MODEL_BASELINE = "numind/NuNER_Zero-span"  # The original
+MODEL_FINETUNED = "/Users/scottwang/PycharmProjects/JSD/JLiNER/models/round Alpha"
+MODEL_BASELINE = "numind/NuNER_Zero-span"
 
 ROW_LIMIT = 500
+THRESHOLD = 0.5
 
-# Evaluation Settings
-THRESHOLD = 0.5  # You can experiment with this (0.4 to 0.7)
 LABELS = [
-    "occupation indication",
+    "reviewer's gender indication",
     "medical condition related",
-    "author's minor children related"
+    "minor children related"
 ]
 
-# Map CSV columns to Model Labels for individual category scoring
 COL_MAP = {
-    "occupation_col": "occupation indication",
+    "gender_col": "reviewer's gender indication",
     "medical_col": "medical condition related",
-    "children_col": "author's minor children related"
+    "minor_col": "minor children related"
 }
 
 
 # ------------------------------------------------------------------
-# METRIC CALCULATION LOGIC
+# HELPERS
 # ------------------------------------------------------------------
+def robust_normalize(text):
+    """
+    Standardizes text for comparison:
+    1. Lowercase
+    2. Removes possessive 's (son's -> son)
+    3. Removes all punctuation
+    4. Collapses whitespace
+    """
+    if not text or pd.isna(text): return ""
+    text = str(text).lower()
+    # Remove possessive 's
+    text = re.sub(r"'s\b", "", text)
+    # Remove punctuation
+    text = re.sub(r'[^a-z0-9\s]', '', text)
+    return " ".join(text.split())
+
+
 def get_metrics(tp, fp, fn):
     precision = tp / (tp + fp) if (tp + fp) > 0 else 0
     recall = tp / (tp + fn) if (tp + fn) > 0 else 0
@@ -43,36 +58,43 @@ def get_metrics(tp, fp, fn):
     return precision, recall, f1
 
 
+# ------------------------------------------------------------------
+# EVALUATION LOGIC
+# ------------------------------------------------------------------
 def evaluate_model(model_path, df):
     print(f"\n⏳ Loading model for evaluation: {model_path}...")
     device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
     model = GLiNER.from_pretrained(model_path).to(device)
 
-    # Trackers per category: { label: {tp: 0, fp: 0, fn: 0} }
     stats = {label: {"tp": 0, "fp": 0, "fn": 0} for label in LABELS}
 
-    processed_rows = 0
+    # Use actual min to avoid out of bounds
+    num_to_process = min(len(df), ROW_LIMIT)
+    subset_df = df.head(num_to_process)
 
-    for _, row in tqdm(df.iterrows(), total=ROW_LIMIT, desc="Analyzing Rows"):
-        text = str(row['original_text'])
-        processed_rows += 1
+    for _, row in tqdm(subset_df.iterrows(), total=num_to_process, desc=f"Evaluating {os.path.basename(model_path)}"):
+        # Handle different potential column names for text
+        text = str(row.get('ori_review') or row.get('original_text') or "")
+        if not text: continue
 
-        # 1. Get Ground Truth for this row
+        # 1. Get Ground Truth (Normalized)
         gt_by_cat = {}
         for col, label in COL_MAP.items():
             val = str(row.get(col, ""))
             if val.lower() in ["nan", "", "none"]:
                 gt_by_cat[label] = []
             else:
-                gt_by_cat[label] = [x.strip().lower() for x in val.split(";") if x.strip()]
+                # Normalize every entity in the ground truth
+                gt_by_cat[label] = [robust_normalize(x) for x in val.split(";") if x.strip()]
 
-        # 2. Get Model Predictions
+        # 2. Get Model Predictions (Normalized)
         preds = model.predict_entities(text, LABELS, threshold=THRESHOLD)
         pred_by_cat = {label: [] for label in LABELS}
         for p in preds:
-            pred_by_cat[p['label']].append(p['text'].lower().strip())
+            # Normalize every predicted entity
+            pred_by_cat[p['label']].append(robust_normalize(p['text']))
 
-        # 3. Compare per category
+        # 3. Compare per category using normalized strings
         for label in LABELS:
             gts = gt_by_cat[label].copy()
             prs = pred_by_cat[label].copy()
@@ -80,7 +102,8 @@ def evaluate_model(model_path, df):
             for gt in gts:
                 match = False
                 for pr in prs:
-                    if gt in pr or pr in gt:  # Substring match
+                    # Check for exact normalized match or substring match
+                    if gt == pr or gt in pr or pr in gt:
                         stats[label]["tp"] += 1
                         prs.remove(pr)
                         match = True
@@ -88,11 +111,8 @@ def evaluate_model(model_path, df):
                 if not match:
                     stats[label]["fn"] += 1
 
-            # Remaining predictions are False Positives
+            # Remaining items in prediction list are False Positives
             stats[label]["fp"] += len(prs)
-
-        if processed_rows > ROW_LIMIT:
-            break
 
     return stats
 
@@ -102,7 +122,7 @@ def evaluate_model(model_path, df):
 # ------------------------------------------------------------------
 def main():
     if not os.path.exists(INPUT_FILE):
-        print(f"❌ Error: {INPUT_FILE} not found. Run the Groq script first.")
+        print(f"❌ Error: {INPUT_FILE} not found.")
         return
 
     df = pd.read_csv(INPUT_FILE)
@@ -115,10 +135,8 @@ def main():
     report = []
 
     for label in LABELS:
-        # Baseline Metrics
         b_p, b_r, b_f1 = get_metrics(baseline_results[label]["tp"], baseline_results[label]["fp"],
                                      baseline_results[label]["fn"])
-        # Finetuned Metrics
         f_p, f_r, f_f1 = get_metrics(finetuned_results[label]["tp"], finetuned_results[label]["fp"],
                                      finetuned_results[label]["fn"])
 
@@ -130,7 +148,6 @@ def main():
             "Precision Δ": f"{(f_p - b_p):+.2f}"
         })
 
-    # Summary Row (Global Averages)
     total_b_f1 = sum([float(x["Base F1"]) for x in report]) / len(LABELS)
     total_f_f1 = sum([float(x["Fine-Tuned F1"]) for x in report]) / len(LABELS)
 
@@ -141,8 +158,11 @@ def main():
     print(report_df.to_string(index=False))
     print("-" * 85)
     print(f"OVERALL SYSTEM SCORE: Baseline F1: {total_b_f1:.3f} | Fine-Tuned F1: {total_f_f1:.3f}")
-    improvement = ((total_f_f1 - total_b_f1) / (total_b_f1 if total_b_f1 > 0 else 1)) * 100
-    print(f"TOTAL PERFORMANCE IMPROVEMENT: {improvement:+.1f}%")
+
+    if total_b_f1 > 0:
+        improvement = ((total_f_f1 - total_b_f1) / total_b_f1) * 100
+        print(f"TOTAL PERFORMANCE IMPROVEMENT: {improvement:+.1f}%")
+
     print("=" * 85)
 
 

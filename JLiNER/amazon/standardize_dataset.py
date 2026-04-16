@@ -5,23 +5,25 @@ import os
 # ------------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------------
-INPUT_FILE = "gold_final.csv"
-OUTPUT_FILE = "gold_final_cleaned.csv"
+INPUT_FILE = "/Users/scottwang/PycharmProjects/JSD/merged_datasets.csv"
+OUTPUT_FILE = "merged_cleaned.csv"
 
 TEXT_COLUMN = "original_text"
-PII_COLUMNS = ["occupation_col", "medical_col", "children_col"]
+PII_COLUMNS = ["gender_col", "medical_col", "minor_col"]
 
 
 def robust_normalize(text):
-    """
-    Normalizes text for comparison by removing punctuation and extra spaces.
-    Ensures '5, 3, and 2' matches '5 3 and 2'.
-    """
-    if not text or pd.isna(text):
-        return ""
+    if not text or pd.isna(text): return ""
     text = str(text).lower()
-    # Remove everything except alphanumeric and spaces
+
+    # 1. Specifically remove possessive 's so "son's" becomes "son"
+    # The space before 's? handles cases where it's at the end of a word
+    text = re.sub(r"'s\b", "", text)
+
+    # 2. Remove all other punctuation
     text = re.sub(r'[^a-z0-9\s]', '', text)
+
+    # 3. Collapse whitespace
     return " ".join(text.split())
 
 

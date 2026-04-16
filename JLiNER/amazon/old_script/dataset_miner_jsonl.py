@@ -8,7 +8,7 @@ from tqdm import tqdm
 # ------------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------------
-INPUT_FILE = "Unknown.jsonl"
+INPUT_FILE = "/Users/scottwang/PycharmProjects/JSD/JLiNER/amazon/Unknown.jsonl"
 OUTPUT_FILE = "amazon_to_label.csv"
 
 # CRITICAL: Use the SMALL model for multiprocessing to save RAM
@@ -28,12 +28,12 @@ MAX_SCAN_LIMIT = 2000000  # Scan up to 2 million rows if needed
 TARGET_COUNTS = {
     "medical condition related": 800,
     "children/minor related": 800,
-    "occupation indication": 800,
+    "reviewer's gender indication": 800,
     "no_pii_negative": 1100
 }
 
 LABELS = [
-    "occupation indication",
+    "reviewer's gender indication",
     "medical condition related",
     "children/minor related"
 ]
@@ -181,10 +181,10 @@ def main():
                         if current_counts["children/minor related"] < TARGET_COUNTS["children/minor related"]:
                             selected_category = "children/minor related"
 
-                    # 3. Occupation
-                    elif "occupation indication" in labels_found:
-                        if current_counts["occupation indication"] < TARGET_COUNTS["occupation indication"]:
-                            selected_category = "occupation indication"
+                    # 3. Gender
+                    elif "reviewer's gender indication" in labels_found:
+                        if current_counts["reviewer's gender indication"] < TARGET_COUNTS["reviewer's gender indication"]:
+                            selected_category = "reviewer's gender indication"
 
                     # 4. Negatives
                     elif not labels_found:

@@ -4,18 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="92ac8a6b-0675-4be7-82c0-983b133d218b" name="Changes" comment="organizing existing files, adding files for new Amazon text">
-      <change afterPath="$PROJECT_DIR$/JLiNER/amazon_new/filter_training_data.py" afterDir="false" />
+    <list default="true" id="92ac8a6b-0675-4be7-82c0-983b133d218b" name="Changes" comment="add keyword filtering">
+      <change afterPath="$PROJECT_DIR$/JLiNER/amazon/audit_llm_performance/audit_high_signal.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JLiNER/amazon/audit_llm_performance/audit_similarity.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JLiNER/amazon/audit_llm_performance/audit_sparsity_impact.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JLiNER/amazon/miner/pre_filter_dataset_json.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JLiNER/amazon/remove_overlap.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JLiNER/amazon/tune_threshold.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data_augmentation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JLiNER/amazon/auto_labeling.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon/auto_labeling.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JLiNER/amazon/auto_labeling_groq.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon/old_script/auto_labeling_groq.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JLiNER/amazon/benchmark_gliner.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon/benchmark_gliner.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JLiNER/amazon/evaluate_finetuned_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon/evaluate_finetuned_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JLiNER/amazon/filter_training_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon/filter_training_data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/JLiNER/amazon/gliner_trainer_gpu.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon/gliner_trainer_gpu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JLiNER/amazon_new/auto_labeling_gpu.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/auto_labeling_gpu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JLiNER/amazon_new/auto_labeling_groq.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JLiNER/amazon_new/auto_labeling_groq_premium.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/auto_labeling_groq_premium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JLiNER/amazon_new/count_skips.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/count_skips.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JLiNER/amazon_new/evaluate_finetuned_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/evaluate_finetuned_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JLiNER/amazon_new/gliner_trainer_gpu.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon_new/gliner_trainer_gpu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JLiNER/amazon/miner/dataset_miner_csv.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon/old_script/dataset_miner_csv.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JLiNER/amazon/miner/dataset_miner_jsonl.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon/old_script/dataset_miner_jsonl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JLiNER/amazon/miner/pre_filter_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon/miner/pre_filter_dataset_csv.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JLiNER/amazon/model_comparison" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon/dev_log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JLiNER/amazon/old_script/check_data_overlap.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon/check_data_overlap.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JLiNER/amazon/standardize_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/JLiNER/amazon/standardize_dataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/benchmark_gliner.py" beforeDir="false" afterPath="$PROJECT_DIR$/benchmark_gliner.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/benchmark_llm.py" beforeDir="false" afterPath="$PROJECT_DIR$/benchmark_llm.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,29 +64,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.benchmark_llm.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/scottwang/PycharmProjects/JSD/JLiNER/amazon"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.benchmark_llm.executor&quot;: &quot;Run&quot;,
+    &quot;Python.check_data_overlap.executor&quot;: &quot;Run&quot;,
+    &quot;Python.standardize_dataset.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/scottwang/PycharmProjects/JSD/JLiNER/amazon&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/JLiNER/amazon" />
-      <recent name="$PROJECT_DIR$/developing/amazon_new" />
-      <recent name="$PROJECT_DIR$/developing" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/JLiNER/models" />
+      <recent name="$PROJECT_DIR$/JLiNER/reserve_data" />
+      <recent name="$PROJECT_DIR$/JLiNER/amazon_new" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/developing/amazon" />
-      <recent name="$PROJECT_DIR$/developing/yelp" />
-      <recent name="$PROJECT_DIR$/developing" />
+      <recent name="$PROJECT_DIR$/JLiNER/amazon/old_script" />
+      <recent name="$PROJECT_DIR$/JLiNER/amazon/old_data" />
+      <recent name="$PROJECT_DIR$/JLiNER/amazon/audit_llm_performance" />
+      <recent name="$PROJECT_DIR$/JLiNER/amazon" />
+      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="benchmark_llm" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="check_data_overlap" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="JSD" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -84,11 +101,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/JLiNER/amazon/old_script" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/benchmark_llm.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/JLiNER/amazon/check_data_overlap.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -99,7 +116,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.benchmark_llm" />
+        <item itemvalue="Python.check_data_overlap" />
       </list>
     </recent_temporary>
   </component>
@@ -263,7 +280,95 @@
       <option name="project" value="LOCAL" />
       <updated>1770248160279</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="organizing existing files, adding files for new Amazon text">
+      <option name="closed" value="true" />
+      <created>1770309839394</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1770309839394</updated>
+    </task>
+    <task id="LOCAL-00020" summary="organizing existing files, adding files for new Amazon text">
+      <option name="closed" value="true" />
+      <created>1770309975205</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1770309975205</updated>
+    </task>
+    <task id="LOCAL-00021" summary="organizing existing files, adding files for new Amazon text">
+      <option name="closed" value="true" />
+      <created>1770319252406</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1770319252406</updated>
+    </task>
+    <task id="LOCAL-00022" summary="organizing existing files, adding files for new Amazon text">
+      <option name="closed" value="true" />
+      <created>1770332345988</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1770332345988</updated>
+    </task>
+    <task id="LOCAL-00023" summary="organizing existing files, adding files for new Amazon text">
+      <option name="closed" value="true" />
+      <created>1770344764658</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1770344764659</updated>
+    </task>
+    <task id="LOCAL-00024" summary="organizing existing files, adding files for new Amazon text">
+      <option name="closed" value="true" />
+      <created>1770345034309</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1770345034310</updated>
+    </task>
+    <task id="LOCAL-00025" summary="organizing existing files, adding files for new Amazon text">
+      <option name="closed" value="true" />
+      <created>1770412358283</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1770412358283</updated>
+    </task>
+    <task id="LOCAL-00026" summary="update package requirements">
+      <option name="closed" value="true" />
+      <created>1773271192372</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1773271192372</updated>
+    </task>
+    <task id="LOCAL-00027" summary="update package requirements">
+      <option name="closed" value="true" />
+      <created>1773272780458</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1773272780458</updated>
+    </task>
+    <task id="LOCAL-00028" summary="update columns">
+      <option name="closed" value="true" />
+      <created>1773347238928</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1773347238928</updated>
+    </task>
+    <task id="LOCAL-00029" summary="add keyword filtering">
+      <option name="closed" value="true" />
+      <created>1776122544350</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1776122544350</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -273,6 +378,9 @@
     <MESSAGE value="removing redundant file" />
     <MESSAGE value="removing redundant file, adding files for yelp set" />
     <MESSAGE value="organizing existing files, adding files for new Amazon text" />
-    <option name="LAST_COMMIT_MESSAGE" value="organizing existing files, adding files for new Amazon text" />
+    <MESSAGE value="update package requirements" />
+    <MESSAGE value="update columns" />
+    <MESSAGE value="add keyword filtering" />
+    <option name="LAST_COMMIT_MESSAGE" value="add keyword filtering" />
   </component>
 </project>

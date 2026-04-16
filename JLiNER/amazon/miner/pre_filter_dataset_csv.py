@@ -30,10 +30,10 @@ def extract_balanced_dataset(df):
     }
 
     limits = {
-        'children': 800,
-        'medical': 800,
-        'gender': 800,
-        'non_pii': 1100
+        'children': 1500,
+        'medical': 1500,
+        'gender': 1500,
+        'non_pii': 0
     }
 
     # --- 3. PROCESSING LOOP ---

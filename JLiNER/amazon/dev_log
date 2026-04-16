@@ -1,0 +1,87 @@
+Using the base case model of our three candidates and LLM labels (eval set is the first 300 entries of the data set bronze) as ground truth,
+we performed a comparison between them:
+==========================================================================================
+🏆 GLiNER TRI-MODEL BENCHMARK SUMMARY
+==========================================================================================
+         Model  F1-Score  Precision  Recall  Hits (TP)  Misses (FN)  False Alarms (FP)
+    NVIDIA-PII     0.556      0.514   0.606         57           37                 54
+    NuNER-Zero     0.401      0.288   0.660         62           32                153
+GLiNER-X-Large     0.133      0.071   0.979         92            2               1198
+==========================================================================================
+
+Round 1 trained model (base: NuNER-Zero) (gemma 3:12b labeled train set; eval set is the data set bronze), vs NuNER-Zero
+=====================================================================================
+🏆 FINAL PERFORMANCE EVALUATION (Threshold: 0.5)
+=====================================================================================
+                       Category Base F1 Fine-Tuned F1 Recall Δ Precision Δ
+          occupation indication   0.250         0.285    +0.77       -0.42
+      medical condition related   0.535         0.385    +0.21       -0.16
+author's minor children related   0.226         0.303    +0.64       -0.03
+-------------------------------------------------------------------------------------
+OVERALL SYSTEM SCORE: Baseline F1: 0.337 | Fine-Tuned F1: 0.324
+TOTAL PERFORMANCE IMPROVEMENT: -3.8%
+=====================================================================================
+
+Round 2 trained model (base: NuNER-Zero) (groq labeled train set (llama 3.1 8b instant, llama 3.3 70b versatile, llama-4-scout-17b-16e-instruct, kimi-k2); eval set is the data set bronze) vs NuNER-Zero:
+=====================================================================================
+🏆 FINAL PERFORMANCE EVALUATION (Threshold: 0.5)
+=====================================================================================
+                       Category Base F1 Fine-Tuned F1 Recall Δ Precision Δ
+          occupation indication   0.250         0.514    +0.65       -0.21
+      medical condition related   0.535         0.551    +0.16       -0.02
+author's minor children related   0.226         0.288    +0.44       -0.03
+-------------------------------------------------------------------------------------
+OVERALL SYSTEM SCORE: Baseline F1: 0.337 | Fine-Tuned F1: 0.451
+TOTAL PERFORMANCE IMPROVEMENT: +33.8%
+=====================================================================================
+
+Round 3 trained model (base: NuNER-Zero) (training set labeled by kimi-k2, kimi-k2-0905, gpt oss 120b, gpt oss 20b; eval set is the data set bronze) vs NuNER-Zero:
+=====================================================================================
+🏆 FINAL PERFORMANCE EVALUATION (Threshold: 0.5)
+=====================================================================================
+                       Category Base F1 Fine-Tuned F1 Recall Δ Precision Δ
+          occupation indication   0.250         0.561    +0.49       -0.10
+      medical condition related   0.535         0.715    +0.07       +0.21
+author's minor children related   0.226         0.561    +0.68       +0.19
+-------------------------------------------------------------------------------------
+OVERALL SYSTEM SCORE: Baseline F1: 0.337 | Fine-Tuned F1: 0.612
+TOTAL PERFORMANCE IMPROVEMENT: +81.7%
+=====================================================================================
+
+Round 3a same approach as round3, a different trial, vs NuNER-Zero
+=====================================================================================
+🏆 FINAL PERFORMANCE EVALUATION (Threshold: 0.5)
+=====================================================================================
+                       Category Base F1 Fine-Tuned F1 Recall Δ Precision Δ
+          occupation indication   0.250         0.560    +0.52       -0.12
+      medical condition related   0.535         0.667    +0.12       +0.12
+author's minor children related   0.226         0.471    +0.56       +0.12
+-------------------------------------------------------------------------------------
+OVERALL SYSTEM SCORE: Baseline F1: 0.337 | Fine-Tuned F1: 0.566
+TOTAL PERFORMANCE IMPROVEMENT: +68.0%
+=====================================================================================
+
+Round 3-1 same training and eval set as round 3 (base: nvidia/gliner-PII), vs NuNER-Zero
+=====================================================================================
+🏆 FINAL PERFORMANCE EVALUATION (Threshold: 0.5)
+=====================================================================================
+                       Category Base F1 Fine-Tuned F1 Recall Δ Precision Δ
+          occupation indication   0.250         0.584    +0.62       -0.12
+      medical condition related   0.535         0.620    +0.12       +0.07
+author's minor children related   0.226         0.639    +0.68       +0.28
+-------------------------------------------------------------------------------------
+OVERALL SYSTEM SCORE: Baseline F1: 0.337 | Fine-Tuned F1: 0.614
+TOTAL PERFORMANCE IMPROVEMENT: +82.3%
+=====================================================================================
+
+threshold tuning for round 3-1
+==================================================
+🏆 OPTIMIZATION COMPLETE
+==================================================
+Best Threshold:  0.80
+Max F1-Score:    0.6293
+Final Precision: 0.5264
+Final Recall:    0.7822
+==================================================
+👉 Use threshold=0.80 in your production script.
+

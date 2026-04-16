@@ -20,8 +20,8 @@ BATCH_SIZE = 50
 # QUOTAS (Targeting 3,500 total)
 TARGET_COUNTS = {
     "medical condition related": 800,
-    "author's minor children related": 800,
-    "occupation indication": 800,
+    "minor children related": 800,
+    "reviewer's gender indication": 800,
     "no_pii_negative": 1100
 }
 
@@ -107,12 +107,12 @@ def main():
                     if "medical condition related" in labels_found and current_counts["medical condition related"] < \
                             TARGET_COUNTS["medical condition related"]:
                         selected_category = "medical condition related"
-                    elif "author's minor children related" in labels_found and current_counts[
-                        "author's minor children related"] < TARGET_COUNTS["author's minor children related"]:
-                        selected_category = "author's minor children related"
-                    elif "occupation indication" in labels_found and current_counts["occupation indication"] < \
-                            TARGET_COUNTS["occupation indication"]:
-                        selected_category = "occupation indication"
+                    elif "minor children related" in labels_found and current_counts[
+                        "minor children related"] < TARGET_COUNTS["minor children related"]:
+                        selected_category = "minor children related"
+                    elif "reviewer's gender indication" in labels_found and current_counts["reviewer's gender indication"] < \
+                            TARGET_COUNTS["reviewer's gender indication"]:
+                        selected_category = "reviewer's gender indication"
                     elif not labels_found and current_counts["no_pii_negative"] < TARGET_COUNTS["no_pii_negative"]:
                         selected_category = "no_pii_negative"
 

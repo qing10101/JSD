@@ -3,112 +3,140 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="/JLiNER/amazon/complete.csv">
+        <entry key="/JLiNER/amazon/miner/amazon_mined_balanced.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/JLiNER/amazon/test_auto_labeled_new.csv">
+        <entry key="/JLiNER/amazon/old_data/amazon_labeled_groq_v2.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/JLiNER/amazon_new/amazon_final_train_clean.csv">
+        <entry key="/JLiNER/amazon/old_data/amazon_to_label.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/JLiNER/amazon_new/amazon_gold_labeled_v4.csv">
+        <entry key="/JLiNER/amazon/old_data/bronze.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/developing/amazon_new/amazon_gold_standard_labels.csv">
+        <entry key="/JLiNER/amazon/old_data/bronze_final.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/developing/amazon_new/amazon_labeled_groq.csv">
+        <entry key="/JLiNER/amazon/old_data/bronze_final_cleaned.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/developing/amazon_new/amazon_labeled_groq_v2.csv">
+        <entry key="/JLiNER/amazon/old_data/clean_benchmark_set.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/developing/amazon_new/amazon_to_label.csv">
+        <entry key="/JLiNER/amazon/old_data/filtered_dataset_1_5th_2.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/developing/amazon_new/clean_benchmark_set.csv">
+        <entry key="/JLiNER/amazon/old_data/full_test.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/developing/amazon_new/complete.csv">
+        <entry key="/JLiNER/amazon/old_data/gold.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/developing/filtered_dataset_1_3rd.csv">
+        <entry key="/JLiNER/amazon/old_data/gold_final.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/developing/filtered_dataset_1_5th.csv">
+        <entry key="/JLiNER/amazon/old_data/gold_final_cleaned.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/developing/filtered_dataset_1_5th_2.csv">
+        <entry key="/JLiNER/amazon/old_data/gold_old.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/developing/full_test.csv">
+        <entry key="/JLiNER/amazon/old_data/merged_cleaned.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/developing/test_auto_labeled_new.csv">
+        <entry key="/JLiNER/amazon/old_data/mined_queries_to_label.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/developing/yelp/yelp_to_label.csv">
+        <entry key="/JLiNER/amazon/old_data/test_auto_labeled_new.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/JLiNER/amazon/old_data/test_compare.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/JLiNER/reserve_data/test.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/merged_datasets.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/test.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

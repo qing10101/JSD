@@ -8,7 +8,7 @@ from tqdm import tqdm
 # ------------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------------
-INPUT_FILE = "gold_final_cleaned.csv"
+INPUT_FILE = "bronze_final_cleaned.csv"
 SAMPLE_SIZE = 300  # Number of rows to benchmark
 THRESHOLD = 0.35  # Standard confidence threshold
 
@@ -20,9 +20,9 @@ MODELS = {
 
 # The categories Gemma labeled for us
 LABELS = [
-    "occupation indication",
+    "reviewer's gender indication",
     "medical condition related",
-    "author's minor children related"
+    "minor children related"
 ]
 
 
@@ -109,7 +109,7 @@ def run_benchmark():
 
             # Ground truth columns from your labeling script
             true_pii = [
-                row.get('occupation_col', ''),
+                row.get('gender_col', ''),
                 row.get('medical_col', ''),
                 row.get('children_col', '')
             ]
@@ -149,7 +149,7 @@ def run_benchmark():
     print("Interpretation:")
     print(" • Higher Recall    -> Better at catching PII (Safer for Privacy)")
     print(" • Higher Precision -> Fewer mistakes (Cleaner data, less manual work)")
-    print(" • Ground Truth     -> Gemma 3 12B / Llama 4 Scout Extractions")
+    print(" • Ground Truth     -> LLM Extractions")
 
 
 if __name__ == "__main__":
