@@ -10,7 +10,7 @@ from groq import AsyncGroq, RateLimitError, BadRequestError
 # ------------------------------------------------------------------
 INPUT_FILE = "/Users/scottwang/PycharmProjects/JSD/JLiNER/amazon/merged_test.csv"
 OUTPUT_FILE = "merged_test_llm.csv"
-API_KEY = "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" # API Key goes here
+API_KEY = "" # API Key goes here
 
 # THE POOL
 MODEL_POOL = [
